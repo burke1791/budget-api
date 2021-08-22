@@ -31,7 +31,7 @@ namespace BudgetApi {
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
       services.Configure<ForwardedHeadersOptions>(options => {
-        options.KnownProxies.Add(IPAddress.Parse("0.0.0.0"));
+        options.KnownProxies.Add(IPAddress.Parse("192.168.1.9"));
       });
       
       services.AddControllers();
