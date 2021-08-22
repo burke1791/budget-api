@@ -20,11 +20,13 @@ using BudgetApi.Models;
 namespace BudgetApi {
   public class Startup {
     private string _connection = null;
-    public Startup(IConfiguration configuration) {
+    public Startup(IConfiguration configuration, IWebHostEnvironment environment) {
       Configuration = configuration;
+      HostingEnvironment = environment;
     }
 
     public IConfiguration Configuration { get; }
+    private IWebHostEnvironment HostingEnvironment { get; set; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
@@ -36,9 +38,13 @@ namespace BudgetApi {
       services.AddControllers();
 
       var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("DefaultConnection"));
-      builder.Password = Configuration["DbPassword"];
-      builder["Server"] = Configuration["DbServer"];
-      builder["User Id"] = Configuration["DbUser"];
+
+      if (HostingEnvironment.IsDevelopment()) {
+        builder.Password = Configuration["DbPassword"];
+        builder["Server"] = Configuration["DbServer"];
+        builder["User Id"] = Configuration["DbUser"];
+      }
+      
       _connection = builder.ConnectionString;
 
       services.AddDbContext<BudgetContext>(opt => opt.UseSqlServer(_connection));
