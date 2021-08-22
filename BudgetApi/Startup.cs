@@ -30,6 +30,7 @@ namespace BudgetApi {
     public void ConfigureServices(IServiceCollection services) {
       services.Configure<ForwardedHeadersOptions>(options => {
         options.KnownProxies.Add(IPAddress.Parse("192.168.0.0/16"));
+        options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
       });
       
       services.AddControllers();
