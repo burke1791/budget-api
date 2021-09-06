@@ -20,7 +20,6 @@ using BudgetApi.Models;
 namespace BudgetApi {
   public class Startup {
     private string _connection = null;
-    readonly string AllowOrigin = "_myAllowAllOrigins";
     public Startup(IConfiguration configuration, IWebHostEnvironment environment) {
       Configuration = configuration;
       HostingEnvironment = environment;
@@ -35,11 +34,7 @@ namespace BudgetApi {
         options.KnownProxies.Add(IPAddress.Parse("192.168.1.9"));
       });
 
-      services.AddCors(options => {
-        options.AddPolicy(name: AllowOrigin, builder => {
-          builder.AllowAnyOrigin();
-        });
-      });
+      services.AddCors();
       
       services.AddControllers();
 
@@ -70,7 +65,7 @@ namespace BudgetApi {
 
       app.UseRouting();
 
-      app.UseCors();
+      app.UseCors(options => options.WithOrigins("http://localhost.com").AllowAnyMethod());
 
       app.UseAuthorization();
 
