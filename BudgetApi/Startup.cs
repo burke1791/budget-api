@@ -65,7 +65,7 @@ namespace BudgetApi {
 
       app.UseRouting();
 
-      app.UseCors(options => options.WithOrigins("http://localhost.com").AllowAnyMethod());
+      app.UseCors(options => options.WithOrigins("http://localhost:*").AllowAnyMethod());
 
       app.UseAuthorization();
 
