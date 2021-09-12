@@ -1,9 +1,7 @@
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace BudgetApi.Models {
-  // [Keyless]
   public class CashFlow {
     [Key]
     public DateTime TransactionMonth { get; set; }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using BudgetApi.Models;
 
 namespace BudgetApi.Models {
   public class BudgetContext : DbContext {
@@ -7,9 +8,11 @@ namespace BudgetApi.Models {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<Transaction>().ToTable("Transactions");
       modelBuilder.Entity<CashFlow>().ToView("MonthlyCashFlow");
+      modelBuilder.Entity<Account>().ToView("AccountMetaData");
     }
 
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<CashFlow> CashFlows { get; set; }
+    public DbSet<Account> Accounts { get; set; }
   }
 }
