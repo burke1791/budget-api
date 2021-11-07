@@ -10,11 +10,13 @@ namespace BudgetApi.Models {
       modelBuilder.Entity<CashFlow>().ToView("MonthlyCashFlow");
       modelBuilder.Entity<Account>().ToView("AccountMetaData");
       modelBuilder.Entity<Category>().ToView("BudgetCategories");
+      modelBuilder.Entity<MonthlyCategorySpending>().ToView("MonthlyCategorySpending").HasNoKey();
     }
 
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<CashFlow> CashFlows { get; set; }
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<MonthlyCategorySpending> MonthlyCategorySpendings { get; set; }
   }
 }
