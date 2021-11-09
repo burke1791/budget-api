@@ -17,5 +17,6 @@ namespace BudgetApi.Models {
     public String CategoryGroupName { get; set; }
     public Decimal Amount { get; set; }
     public String Description { get; set; }
+    public bool IsUncategorized { get; set; }
   }
 }
