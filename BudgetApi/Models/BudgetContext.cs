@@ -11,6 +11,8 @@ namespace BudgetApi.Models {
       modelBuilder.Entity<Account>().ToView("AccountMetaData");
       modelBuilder.Entity<Category>().ToView("BudgetCategories");
       modelBuilder.Entity<MonthlyCategorySpending>().ToView("MonthlyCategorySpending").HasNoKey();
+      modelBuilder.Entity<FullTransaction>().ToView("TransactionsView");
+      modelBuilder.Entity<UnassignedTransaction>().ToView("UnassignedTransactionCount");
     }
 
     public DbSet<Transaction> Transactions { get; set; }
@@ -18,5 +20,7 @@ namespace BudgetApi.Models {
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<MonthlyCategorySpending> MonthlyCategorySpendings { get; set; }
+    public DbSet<FullTransaction> FullTransactions { get; set; }
+    public DbSet<UnassignedTransaction> UnassignedTransactions { get; set; }
   }
 }
