@@ -13,6 +13,7 @@ namespace BudgetApi.Models {
       modelBuilder.Entity<MonthlyCategorySpending>().ToView("MonthlyCategorySpending").HasNoKey();
       modelBuilder.Entity<FullTransaction>().ToView("TransactionsView");
       modelBuilder.Entity<UnassignedTransaction>().ToView("UnassignedTransactionCount");
+      modelBuilder.Entity<Merchant>().ToTable("Merchants");
     }
 
     public DbSet<Transaction> Transactions { get; set; }
@@ -22,5 +23,6 @@ namespace BudgetApi.Models {
     public DbSet<MonthlyCategorySpending> MonthlyCategorySpendings { get; set; }
     public DbSet<FullTransaction> FullTransactions { get; set; }
     public DbSet<UnassignedTransaction> UnassignedTransactions { get; set; }
+    public DbSet<Merchant> Merchants { get; set; }
   }
 }
