@@ -35,6 +35,23 @@ namespace BudgetApi.Controllers {
       return merchant;
     }
 
+    // POST: api/Merchant
+    [HttpPost]
+    public async Task<ActionResult<Merchant>> NewMerchant(Merchant merchant) {
+      _context.Merchants.Add(merchant);
+      try {
+        await _context.SaveChangesAsync();
+      } catch (DbUpdateException) {
+        if (MerchantExists(merchant.MerchantId)) {
+          return Conflict();
+        } else {
+          throw;
+        }
+      }
+
+      return CreatedAtAction("GetMerchant", new { merchantId = merchant.MerchantId }, merchant);
+    }
+
     private bool MerchantExists(int merchantId) {
       return _context.Merchants.Any(m => m.MerchantId == merchantId);
     }
