@@ -25,5 +25,7 @@ namespace BudgetApi.Models {
     public DbSet<UnassignedTransaction> UnassignedTransactions { get; set; }
     public DbSet<Merchant> Merchants { get; set; }
     public DbSet<TransactionSimilarity> TransactionSimilarities { get; set; }
+    public DbSet<CategorizeTransaction> CategorizeTransactions { get; set; }
+    public DbSet<RowCount> RowCounts { get; set; }
   }
 }

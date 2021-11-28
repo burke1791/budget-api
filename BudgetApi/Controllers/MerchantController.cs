@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using BudgetApi.Models;
 
 namespace BudgetApi.Controllers {
@@ -50,6 +51,21 @@ namespace BudgetApi.Controllers {
       }
 
       return CreatedAtAction("GetMerchant", new { merchantId = merchant.MerchantId }, merchant);
+    }
+
+    // POST: api/Merchant/searchstring
+    [HttpPost("searchstring")]
+    public async Task<ActionResult<IEnumerable<RowCount>>> AddSearchString([FromBody] MerchantSearch merchantSearch) {
+      string sql = "Exec dbo.up_SetRawTransactionSearchString @MerchantId = @MerchantId, @SearchString = @SearchString, @NotLike = @NotLike, @AccountId = @AccountId";
+
+      var parms = new List<SqlParameter> {
+        new SqlParameter("MerchantId", merchantSearch.MerchantId),
+        new SqlParameter("SearchString", merchantSearch.SearchString),
+        new SqlParameter("NotLike", merchantSearch.NotLike),
+        new SqlParameter("AccountId", merchantSearch.AccountId)
+      };
+
+      return await _context.RowCounts.FromSqlRaw(sql, parms.ToArray()).ToListAsync();
     }
 
     private bool MerchantExists(int merchantId) {

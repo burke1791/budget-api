@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BudgetApi.Models {
   public class Transaction {
@@ -9,5 +10,12 @@ namespace BudgetApi.Models {
     public Decimal Amount { get; set; }
     public Int32 RawTransactionId { get; set; }
     public System.Nullable<Int32> UserSelectedCategoryId { get; set; }
+  }
+
+  public class CategorizeTransaction {
+    [Key]
+    public Int64 TransactionId { get; set; }
+    public Int32 MerchantId { get; set; }
+    public String IncludedTransactions { get; set; }
   }
 }
