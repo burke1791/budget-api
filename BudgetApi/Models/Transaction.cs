@@ -15,7 +15,7 @@ namespace BudgetApi.Models {
   public class CategorizeTransaction {
     [Key]
     public Int64 TransactionId { get; set; }
-    public Int32 MerchantId { get; set; }
+    public Int32 CategoryId { get; set; }
     public String IncludedTransactions { get; set; }
   }
 }

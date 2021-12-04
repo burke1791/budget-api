@@ -63,11 +63,11 @@ namespace BudgetApi.Controllers {
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost("category")]
     public async Task<ActionResult<IEnumerable<RowCount>>> PostTransaction([FromBody] CategorizeTransaction transaction) {
-      string sql = "Exec dbo.up_CategorizeTransaction @TransactionId = @TransactionId, @MerchantId = @MerchantId, @IncludedTransactionIds = @IncludedTransactionIds";
+      string sql = "Exec dbo.up_CategorizeTransaction @TransactionId = @TransactionId, @CategoryId = @CategoryId, @IncludedTransactionIds = @IncludedTransactionIds";
       
       var parms = new List<SqlParameter> {
         new SqlParameter("TransactionId", transaction.TransactionId),
-        new SqlParameter("MerchantId", transaction.MerchantId),
+        new SqlParameter("CategoryId", transaction.CategoryId),
         new SqlParameter("IncludedTransactionIds", transaction.IncludedTransactions)
       };
       

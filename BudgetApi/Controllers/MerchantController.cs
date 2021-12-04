@@ -61,8 +61,8 @@ namespace BudgetApi.Controllers {
       var parms = new List<SqlParameter> {
         new SqlParameter("MerchantId", merchantSearch.MerchantId),
         new SqlParameter("SearchString", merchantSearch.SearchString),
-        new SqlParameter("NotLike", merchantSearch.NotLike),
-        new SqlParameter("AccountId", merchantSearch.AccountId)
+        new SqlParameter("NotLike", merchantSearch.NotLike == null ? DBNull.Value : merchantSearch.NotLike),
+        new SqlParameter("AccountId", merchantSearch.AccountId == null ? DBNull.Value : merchantSearch.AccountId)
       };
 
       return await _context.RowCounts.FromSqlRaw(sql, parms.ToArray()).ToListAsync();
