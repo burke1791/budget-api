@@ -19,6 +19,28 @@ steps:
       - cd budget-api/BudgetApi
       - dotnet publish --configuration Release
 
+  - name: set-secrets-stage
+    image: .net
+    commands:
+      - cd budget-api/BudgetApi/bin/Release/net5.0/publish
+      - set Budget:DbServer=$DB_SERVER_STAGE
+      - set Budget:DbUser=$DB_USER_STAGE
+      - set Budget:DbPassword=$DB_PASSWORD_STAGE
+    when:
+      branch:
+        - stage
+
+  - name: set-secrets-prod
+    image: .net
+    commands:
+      - cd budget-api/BudgetApi/bin/Release/net5.0/publish
+      - set Budget:DbServer=$DB_SERVER_PROD
+      - set Budget:DbUser=$DB_USER_PROD
+      - set Budget:DbPassword=$DB_PASSWORD_PROD
+    when:
+      branch:
+        - master
+
   - name: test
     image: .net
     commands:
@@ -34,8 +56,8 @@ steps:
         from_secret: SSH_PASSWORD
       port: 22
       target: /var/www/budget-api
-      source: ./budget-api/BudgetApi/bin/Release/net5.0/*
-      strip_components: 5
+      source: ./budget-api/BudgetApi/bin/Release/net5.0/publish/*
+      strip_components: 6
       rm: true
     when:
       branch:
@@ -51,9 +73,41 @@ steps:
         from_secret: SSH_PASSWORD_PROD
       port: 22
       target: /var/www/budget-api
-      source: ./budget-api/BudgetApi/bin/Release/net5.0/*
-      strip_components: 5
+      source: ./budget-api/BudgetApi/bin/Release/net5.0/publish/*
+      strip_components: 6
       rm: true
+    when:
+      branch:
+        - master
+
+  - name: restart-service-stage
+    image: appleboy/drone-scp
+    settings:
+      host: 192.168.1.12
+      username:
+        from_secret: SSH_USER_STAGE
+      password:
+        from_secret: SSH_PASSWORD_STAGE
+      port: 22
+      command_timeout: 2m
+      script:
+        - service budget-api restart
+    when:
+      branch:
+        - stage
+
+  - name: restart-service-prod
+    image: appleboy/drone-scp
+    settings:
+      host: 192.168.1.20
+      username:
+        from_secret: SSH_USER_STAGE
+      password:
+        from_secret: SSH_PASSWORD_STAGE
+      port: 22
+      command_timeout: 2m
+      script:
+        - service budget-api restart
     when:
       branch:
         - master

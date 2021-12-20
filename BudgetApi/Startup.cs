@@ -48,9 +48,9 @@ namespace BudgetApi {
       var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("DefaultConnection"));
 
       if (HostingEnvironment.IsDevelopment()) {
-        builder.Password = Configuration["DbPassword"];
-        builder["Server"] = Configuration["DbServer"];
-        builder["User Id"] = Configuration["DbUser"];
+        builder.Password = Configuration["Budget:DbPassword"];
+        builder["Server"] = Configuration["Budget:DbServer"];
+        builder["User Id"] = Configuration["Budget:DbUser"];
       }
       
       _connection = builder.ConnectionString;
