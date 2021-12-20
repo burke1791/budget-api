@@ -30,9 +30,7 @@ steps:
         from_secret: DB_PASSWORD_STAGE
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - set Budget:DbServer=$${SERVER}
-      - set Budget:DbUser=$${USER}
-      - set Budget:DbPassword=$${PASSWORD}
+      - sed -i $${SET_SECRETS_STAGE} appsettings.json
     when:
       branch:
         - stage
@@ -48,9 +46,7 @@ steps:
         from_secret: DB_PASSWORD_PROD
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - set Budget:DbServer=$${SERVER}
-      - set Budget:DbUser=$${USER}
-      - set Budget:DbPassword=$${PASSWORD}
+      - sed -i $${SET_SECRETS_PROD} appsettings.json
     when:
       branch:
         - master
