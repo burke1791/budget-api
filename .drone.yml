@@ -21,22 +21,38 @@ steps:
 
   - name: set-secrets-stage
     image: bitnami/dotnet-sdk
+    environment:
+      SERVER:
+        from_secret: DB_SERVER_STAGE
+      USER:
+        from_secret: DB_USER_STAGE
+      PASSWORD:
+        from_secret: DB_PASSWORD_STAGE
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - set Budget:DbServer=$DB_SERVER_STAGE
-      - set Budget:DbUser=$DB_USER_STAGE
-      - set Budget:DbPassword=$DB_PASSWORD_STAGE
+      - echo ${SERVER}
+      - echo $${SERVER}
+      - set Budget:DbServer=$${SERVER}
+      - set Budget:DbUser=$${USER}
+      - set Budget:DbPassword=$${PASSWORD}
     when:
       branch:
         - stage
 
   - name: set-secrets-prod
     image: bitnami/dotnet-sdk
+    environment:
+      SERVER:
+        from_secret: DB_SERVER_PROD
+      USER:
+        from_secret: DB_USER_PROD
+      PASSWORD:
+        from_secret: DB_PASSWORD_PROD
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - set Budget:DbServer=$DB_SERVER_PROD
-      - set Budget:DbUser=$DB_USER_PROD
-      - set Budget:DbPassword=$DB_PASSWORD_PROD
+      - set Budget:DbServer=$${SERVER}
+      - set Budget:DbUser=$${USER}
+      - set Budget:DbPassword=$${PASSWORD}
     when:
       branch:
         - master
