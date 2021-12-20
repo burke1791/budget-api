@@ -44,7 +44,7 @@ steps:
   - name: test
     image: .net
     commands:
-      - echo "figure out how to run tests on an EF Core Api"
+      - echo "figure out how to write and run tests on an EF Core Api"
 
   - name: deploy-stage
     image: appleboy/drone-scp
