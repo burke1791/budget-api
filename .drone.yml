@@ -14,13 +14,13 @@ steps:
       - git checkout $DRONE_COMMIT
     
   - name: build
-    image: .net
+    image: bitnami/dotnet-sdk
     commands:
       - cd budget-api/BudgetApi
       - dotnet publish --configuration Release
 
   - name: set-secrets-stage
-    image: .net
+    image: bitnami/dotnet-sdk
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
       - set Budget:DbServer=$DB_SERVER_STAGE
@@ -31,7 +31,7 @@ steps:
         - stage
 
   - name: set-secrets-prod
-    image: .net
+    image: bitnami/dotnet-sdk
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
       - set Budget:DbServer=$DB_SERVER_PROD
@@ -42,7 +42,7 @@ steps:
         - master
 
   - name: test
-    image: .net
+    image: bitnami/dotnet-sdk
     commands:
       - echo "figure out how to write and run tests on an EF Core Api"
 
