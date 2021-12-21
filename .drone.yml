@@ -20,7 +20,7 @@ steps:
       - dotnet publish --configuration Release
 
   - name: set-secrets-stage
-    image: bitnami/dotnet-sdk
+    image: alpine
     environment:
       SERVER:
         from_secret: DB_SERVER_STAGE
@@ -37,7 +37,7 @@ steps:
         - stage
 
   - name: set-secrets-prod
-    image: bitnami/dotnet-sdk
+    image: alpine
     environment:
       SERVER:
         from_secret: DB_SERVER_PROD
