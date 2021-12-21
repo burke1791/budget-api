@@ -31,7 +31,7 @@ steps:
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
       - ls -lh
-      - sed -i $$SET_SECRETS_STAGE appsettings.json
+      - sed -i $${SET_SECRETS_STAGE} appsettings.json
     when:
       branch:
         - stage
@@ -47,7 +47,7 @@ steps:
         from_secret: DB_PASSWORD_PROD
     commands:
       - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - sed -i $$SET_SECRETS_PROD appsettings.json
+      - sed -i $${SET_SECRETS_PROD} appsettings.json
     when:
       branch:
         - master
