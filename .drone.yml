@@ -13,36 +13,46 @@ steps:
       - cd budget-api/
       - git checkout $DRONE_COMMIT
     
-  - name: build
-    image: .net
+  - name: build-stage
+    image: bitnami/dotnet-sdk
+    environment:
+      DB_SERVER:
+        from_secret: DB_SERVER_STAGE
+      DB_USER:
+        from_secret: DB_USER_STAGE
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_STAGE
     commands:
+      - set DB_SERVER=$${DB_SERVER}
+      - set DB_USER=$${DB_USER}
+      - set DB_PASSWORD=$${DB_PASSWORD}
       - cd budget-api/BudgetApi
       - dotnet publish --configuration Release
-
-  - name: set-secrets-stage
-    image: .net
-    commands:
-      - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - set Budget:DbServer=$DB_SERVER_STAGE
-      - set Budget:DbUser=$DB_USER_STAGE
-      - set Budget:DbPassword=$DB_PASSWORD_STAGE
     when:
       branch:
         - stage
 
-  - name: set-secrets-prod
-    image: .net
+  - name: build-prod
+    image: bitnami/dotnet-sdk
+    environment:
+      DB_SERVER:
+        from_secret: DB_SERVER_PROD
+      DB_USER:
+        from_secret: DB_USER_PROD
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_PROD
     commands:
-      - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - set Budget:DbServer=$DB_SERVER_PROD
-      - set Budget:DbUser=$DB_USER_PROD
-      - set Budget:DbPassword=$DB_PASSWORD_PROD
+      - set DB_SERVER=$${DB_SERVER}
+      - set DB_USER=$${DB_USER}
+      - set DB_PASSWORD=$${DB_PASSWORD}
+      - cd budget-api/BudgetApi
+      - dotnet publish --configuration Release
     when:
       branch:
         - master
 
   - name: test
-    image: .net
+    image: bitnami/dotnet-sdk
     commands:
       - echo "figure out how to write and run tests on an EF Core Api"
 
@@ -81,33 +91,31 @@ steps:
         - master
 
   - name: restart-service-stage
-    image: appleboy/drone-scp
+    image: appleboy/drone-ssh
     settings:
       host: 192.168.1.12
       username:
-        from_secret: SSH_USER_STAGE
+        from_secret: SSH_USER
       password:
-        from_secret: SSH_PASSWORD_STAGE
+        from_secret: SSH_PASSWORD
       port: 22
-      command_timeout: 2m
       script:
-        - service budget-api restart
+        - sudo systemctl restart budget-api.service
     when:
       branch:
         - stage
 
   - name: restart-service-prod
-    image: appleboy/drone-scp
+    image: appleboy/drone-ssh
     settings:
       host: 192.168.1.20
       username:
-        from_secret: SSH_USER_STAGE
+        from_secret: SSH_USER_PROD
       password:
-        from_secret: SSH_PASSWORD_STAGE
+        from_secret: SSH_PASSWORD_PROD
       port: 22
-      command_timeout: 2m
       script:
-        - service budget-api restart
+        - sudo systemctl restart budget-api.service
     when:
       branch:
         - master

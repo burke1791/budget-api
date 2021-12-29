@@ -51,8 +51,12 @@ namespace BudgetApi {
         builder.Password = Configuration["Budget:DbPassword"];
         builder["Server"] = Configuration["Budget:DbServer"];
         builder["User Id"] = Configuration["Budget:DbUser"];
+      } else {
+        builder.Password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+        builder["Server"] = Environment.GetEnvironmentVariable("DB_SERVER");
+        builder["User Id"] = Environment.GetEnvironmentVariable("DB_USER");
       }
-      
+
       _connection = builder.ConnectionString;
 
       services.AddDbContext<BudgetContext>(opt => opt.UseSqlServer(_connection));
