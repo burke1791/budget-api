@@ -12,62 +12,12 @@ steps:
       - git clone http://gitea.burkcules.burke/burke/budget-api.git
       - cd budget-api/
       - git checkout $DRONE_COMMIT
-
-  - name: set-secrets-stage
-    image: alpine
-    environment:
-      SERVER:
-        from_secret: DB_SERVER_STAGE
-      USER:
-        from_secret: DB_USER_STAGE
-      PASSWORD:
-        from_secret: DB_PASSWORD_STAGE
-    commands:
-      - export DB_SERVER=$${DB_SERVER}
-      - export DB_USER=$${DB_USER}
-      - export DB_PASSWORD=$${DB_PASSWORD}
-    when:
-      branch:
-        - stage
     
   - name: build
     image: bitnami/dotnet-sdk
     commands:
       - cd budget-api/BudgetApi
       - dotnet publish --configuration Release
-
-  # - name: set-secrets-stage
-  #   image: alpine
-  #   environment:
-  #     SERVER:
-  #       from_secret: DB_SERVER_STAGE
-  #     USER:
-  #       from_secret: DB_USER_STAGE
-  #     PASSWORD:
-  #       from_secret: DB_PASSWORD_STAGE
-  #   commands:
-  #     - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-  #     - ls -lh
-  #     - sed -i $${SET_SECRETS_STAGE} appsettings.json
-  #   when:
-  #     branch:
-  #       - stage
-
-  # - name: set-secrets-prod
-  #   image: alpine
-  #   environment:
-  #     SERVER:
-  #       from_secret: DB_SERVER_PROD
-  #     USER:
-  #       from_secret: DB_USER_PROD
-  #     PASSWORD:
-  #       from_secret: DB_PASSWORD_PROD
-  #   commands:
-  #     - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-  #     - sed -i $${SET_SECRETS_PROD} appsettings.json
-  #   when:
-  #     branch:
-  #       - master
 
   - name: test
     image: bitnami/dotnet-sdk
@@ -113,9 +63,9 @@ steps:
     settings:
       host: 192.168.1.12
       username:
-        from_secret: SSH_USER_STAGE
+        from_secret: SSH_USER
       password:
-        from_secret: SSH_PASSWORD_STAGE
+        from_secret: SSH_PASSWORD
       port: 22
       command_timeout: 2m
       script:
@@ -129,9 +79,9 @@ steps:
     settings:
       host: 192.168.1.20
       username:
-        from_secret: SSH_USER_STAGE
+        from_secret: SSH_USER_PROD
       password:
-        from_secret: SSH_PASSWORD_STAGE
+        from_secret: SSH_PASSWORD_PROD
       port: 22
       command_timeout: 2m
       script:
