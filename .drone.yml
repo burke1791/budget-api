@@ -28,7 +28,7 @@ steps:
       - export DB_PASSWORD=$${DB_PASSWORD}
     when:
       branch:
-        - master
+        - stage
     
   - name: build
     image: bitnami/dotnet-sdk
