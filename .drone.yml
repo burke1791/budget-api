@@ -19,6 +19,39 @@ steps:
       - cd budget-api/BudgetApi
       - dotnet publish --configuration Release
 
+  # - name: set-secrets-stage
+  #   image: alpine
+  #   environment:
+  #     SERVER:
+  #       from_secret: DB_SERVER_STAGE
+  #     USER:
+  #       from_secret: DB_USER_STAGE
+  #     PASSWORD:
+  #       from_secret: DB_PASSWORD_STAGE
+  #   commands:
+  #     - cd budget-api/BudgetApi/bin/Release/net5.0/publish
+  #     - ls -lh
+  #     - sed -i $${SET_SECRETS_STAGE} appsettings.json
+  #   when:
+  #     branch:
+  #       - stage
+
+  # - name: set-secrets-prod
+  #   image: alpine
+  #   environment:
+  #     SERVER:
+  #       from_secret: DB_SERVER_PROD
+  #     USER:
+  #       from_secret: DB_USER_PROD
+  #     PASSWORD:
+  #       from_secret: DB_PASSWORD_PROD
+  #   commands:
+  #     - cd budget-api/BudgetApi/bin/Release/net5.0/publish
+  #     - sed -i $${SET_SECRETS_PROD} appsettings.json
+  #   when:
+  #     branch:
+  #       - master
+
   - name: set-secrets-stage
     image: alpine
     environment:
@@ -29,25 +62,9 @@ steps:
       PASSWORD:
         from_secret: DB_PASSWORD_STAGE
     commands:
-      - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - ls -lh
-      - sed -i $${SET_SECRETS_STAGE} appsettings.json
-    when:
-      branch:
-        - stage
-
-  - name: set-secrets-prod
-    image: alpine
-    environment:
-      SERVER:
-        from_secret: DB_SERVER_PROD
-      USER:
-        from_secret: DB_USER_PROD
-      PASSWORD:
-        from_secret: DB_PASSWORD_PROD
-    commands:
-      - cd budget-api/BudgetApi/bin/Release/net5.0/publish
-      - sed -i $${SET_SECRETS_PROD} appsettings.json
+      - export DB_SERVER=$${DB_SERVER}
+      - export DB_USER=$${DB_USER}
+      - export DB_PASSWORD=$${DB_PASSWORD}
     when:
       branch:
         - master
