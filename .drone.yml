@@ -23,6 +23,9 @@ steps:
       DB_PASSWORD:
         from_secret: DB_PASSWORD_STAGE
     commands:
+      - set DB_SERVER=$${DB_SERVER}
+      - set DB_USER=$${DB_USER}
+      - set DB_PASSWORD=$${DB_PASSWORD}
       - cd budget-api/BudgetApi
       - dotnet publish --configuration Release
     when:
@@ -39,6 +42,9 @@ steps:
       DB_PASSWORD:
         from_secret: DB_PASSWORD_PROD
     commands:
+      - set DB_SERVER=$${DB_SERVER}
+      - set DB_USER=$${DB_USER}
+      - set DB_PASSWORD=$${DB_PASSWORD}
       - cd budget-api/BudgetApi
       - dotnet publish --configuration Release
     when:
